@@ -1,0 +1,75 @@
+<section ng-controller="TermsController" ng-init="initializePagination(); getSpecifiedPageContent();">
+  <br><br>
+
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <form ng-submit="performSearch();">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Type your query here" ng-model="query">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit">Search</button>
+            <button class="btn btn-danger" ng-click="initializePagination(); getSpecifiedPageContent();" ng-disabled="cannotReset">Reset</button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row" ng-show="searchResults !== null">
+    <div class="col-md-offset-3 col-md-6">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="text-center">Document ID</th>
+            <th class="text-center">Score</th>
+            <th class="text-center">tf-idf Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="result in searchResults"> 
+            <td class="text-center" ng-bind="result.fileName"></td>
+            <td class="text-center" ng-bind="result.score"></td>
+            <td class="text-center" ng-bind="result.score2"></td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>
+  </div>
+
+  <div class="text-center">
+    <pagination ng-change="getSpecifiedPageContent()" total-items="totalItems" ng-model="selectedPage" max-size="maxSize" boundary-links="true" direction-links="false" class="text-center"></pagination>
+  </div>
+
+  <table class="table table-hover" ng-show="success">
+    <thead>
+      <tr>
+        <th class="text-center">Term</th>
+        <th class="text-center">Document ID</th>
+        <th class="text-center">Term Frequency</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="term in terms"> 
+        <td class="text-center" ng-bind="term.token"></td>
+        <td class="text-center">
+          <span ng-repeat="document in term.documents">
+            {{document.fileName}}
+            <br>
+          </span>
+        </td>
+        <td class="text-center">
+          <span ng-repeat="document in term.documents">
+            {{document.termFrequency}}
+            <br>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="text-center">
+    <pagination ng-change="getSpecifiedPageContent()" total-items="totalItems" ng-model="selectedPage" max-size="maxSize" boundary-links="true" direction-links="false" class="text-center"></pagination>
+  </div>
+</section>
